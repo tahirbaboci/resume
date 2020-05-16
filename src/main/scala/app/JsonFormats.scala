@@ -1,9 +1,7 @@
-package resume
+package app
 
-import models._
-import resume.UserRegistry.ActionPerformed
-
-//#json-formats
+import registry.UserRegistry.ActionPerformed
+import registry._
 import spray.json.DefaultJsonProtocol
 
 object JsonFormats {
@@ -23,4 +21,3 @@ object JsonFormats {
 
   implicit val actionPerformedJsonFormat = jsonFormat1(ActionPerformed)
 }
-//#json-formats

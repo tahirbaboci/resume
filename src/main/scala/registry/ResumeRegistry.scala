@@ -1,4 +1,4 @@
-package models
+package registry
 
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
@@ -35,13 +35,13 @@ object ResumeRegistry {
   final case class CreateResume(user: Resume,
                                 replyTo: ActorRef[ActionPerformed])
       extends Command
-  final case class GetResume(name: String, replyTo: ActorRef[GetUserResponse])
+  final case class GetResume(name: String, replyTo: ActorRef[GetResumeResponse])
       extends Command
   final case class DeleteResume(name: String,
                                 replyTo: ActorRef[ActionPerformed])
       extends Command
 
-  final case class GetUserResponse(maybeUser: Option[Resume])
+  final case class GetResumeResponse(maybeUser: Option[Resume])
   final case class ActionPerformed(description: String)
 
   def apply(): Behavior[Command] = registry(Set.empty)
@@ -54,12 +54,12 @@ object ResumeRegistry {
       case CreateResume(resume, replyTo) =>
         replyTo ! ActionPerformed(s"Resume for ${resume.name} created.")
         registry(resumes + resume)
-      case GetResume(name, replyTo) =>
-        replyTo ! GetUserResponse(resumes.find(_.name == name))
+      case GetResume(id, replyTo) =>
+        replyTo ! GetResumeResponse(resumes.find(_.id == id))
         Behaviors.same
-      case DeleteResume(name, replyTo) =>
-        replyTo ! ActionPerformed(s"Resume for $name deleted.")
-        registry(resumes.filterNot(_.name == name))
+      case DeleteResume(id, replyTo) =>
+        replyTo ! ActionPerformed(s"Resume for $id deleted.")
+        registry(resumes.filterNot(_.id == id))
     }
 }
 

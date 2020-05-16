@@ -1,27 +1,31 @@
-package resume
+package app
 
 import akka.actor.typed.ActorSystem
-import akka.actor.typed.scaladsl.adapter._
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
+import registry.UserRegistry
+import routes.UserRoutes
 
-import scala.util.Failure
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 //#main-class
 object QuickstartApp {
   //#start-http-server
   private def startHttpServer(routes: Route, system: ActorSystem[_]): Unit = {
     // Akka HTTP still needs a classic ActorSystem to start
-    implicit val classicSystem: akka.actor.ActorSystem = system.toClassic
+    implicit val classicSystem: akka.actor.ActorSystem = system.classicSystem
     import system.executionContext
 
     val futureBinding = Http().bindAndHandle(routes, "localhost", 8080)
     futureBinding.onComplete {
       case Success(binding) =>
         val address = binding.localAddress
-        system.log.info("Server online at http://{}:{}/", address.getHostString, address.getPort)
+        system.log.info(
+          "Server online at http://{}:{}/",
+          address.getHostString,
+          address.getPort
+        )
       case Failure(ex) =>
         system.log.error("Failed to bind HTTP endpoint, terminating system", ex)
         system.terminate()
@@ -43,4 +47,3 @@ object QuickstartApp {
     //#server-bootstrapping
   }
 }
-//#main-class

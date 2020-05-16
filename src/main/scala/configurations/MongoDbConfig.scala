@@ -6,7 +6,8 @@ import org.bson.codecs.configuration.CodecRegistries._
 import org.mongodb.scala._
 import org.mongodb.scala.MongoClient.DEFAULT_CODEC_REGISTRY
 import org.mongodb.scala.bson.codecs.Macros._
-import models._
+import registry.{Certification, Education, Experience, Language, Resume}
+
 object MongoDbConfig {
   lazy val config = ConfigFactory.load()
   lazy val mongoClient: MongoClient = MongoClient(config.getString("mongo.uri"))

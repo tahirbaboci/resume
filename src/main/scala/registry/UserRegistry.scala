@@ -1,9 +1,9 @@
-package resume
+package registry
 
 //#user-registry-actor
-import akka.actor.typed.ActorRef
-import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.{ActorRef, Behavior}
+
 import scala.collection.immutable
 
 //#user-case-classes
@@ -15,9 +15,12 @@ object UserRegistry {
   // actor protocol
   sealed trait Command
   final case class GetUsers(replyTo: ActorRef[Users]) extends Command
-  final case class CreateUser(user: User, replyTo: ActorRef[ActionPerformed]) extends Command
-  final case class GetUser(name: String, replyTo: ActorRef[GetUserResponse]) extends Command
-  final case class DeleteUser(name: String, replyTo: ActorRef[ActionPerformed]) extends Command
+  final case class CreateUser(user: User, replyTo: ActorRef[ActionPerformed])
+      extends Command
+  final case class GetUser(name: String, replyTo: ActorRef[GetUserResponse])
+      extends Command
+  final case class DeleteUser(name: String, replyTo: ActorRef[ActionPerformed])
+      extends Command
 
   final case class GetUserResponse(maybeUser: Option[User])
   final case class ActionPerformed(description: String)

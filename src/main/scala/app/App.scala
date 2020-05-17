@@ -10,7 +10,7 @@ import routes.{ResumeRoutes, UserRoutes}
 import scala.util.{Failure, Success}
 
 //#main-class
-object QuickstartApp {
+object App {
   //#start-http-server
   private def startHttpServer(routes: Route, system: ActorSystem[_]): Unit = {
     // Akka HTTP still needs a classic ActorSystem to start

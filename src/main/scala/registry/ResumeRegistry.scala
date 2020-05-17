@@ -11,8 +11,8 @@ case class Resume(id: Int,
                   language: Option[Language],
                   certification: Option[Certification],
                   project: Option[Project],
-                  hobby: List[String],
-                  computerSkills: List[String]) {
+                  hobby: Option[List[String]],
+                  computerSkills: Option[List[String]]) {
   require(name != null, "name not filled")
   require(name != null, "surname not filled")
 
@@ -35,13 +35,12 @@ object ResumeRegistry {
   final case class CreateResume(user: Resume,
                                 replyTo: ActorRef[ActionPerformed])
       extends Command
-  final case class GetResume(name: String, replyTo: ActorRef[GetResumeResponse])
+  final case class GetResume(id: Int, replyTo: ActorRef[GetResumeResponse])
       extends Command
-  final case class DeleteResume(name: String,
-                                replyTo: ActorRef[ActionPerformed])
+  final case class DeleteResume(id: Int, replyTo: ActorRef[ActionPerformed])
       extends Command
 
-  final case class GetResumeResponse(maybeUser: Option[Resume])
+  final case class GetResumeResponse(maybeResume: Option[Resume])
   final case class ActionPerformed(description: String)
 
   def apply(): Behavior[Command] = registry(Set.empty)

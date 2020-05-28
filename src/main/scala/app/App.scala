@@ -4,8 +4,8 @@ import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
-import registry.{ResumeRegistry, UserRegistry}
-import routes.{ResumeRoutes, UserRoutes}
+import registry.{ResumeRegistry}
+import routes.{ResumeRoutes}
 
 import scala.util.{Failure, Success}
 
@@ -35,11 +35,6 @@ object App {
   def main(args: Array[String]): Unit = {
     //#server-bootstrapping
     val rootBehavior = Behaviors.setup[Nothing] { context =>
-//      val userRegistryActor = context.spawn(UserRegistry(), "UserRegistryActor")
-//      context.watch(userRegistryActor)
-//      val routes = new UserRoutes(userRegistryActor)(context.system)
-//      startHttpServer(routes.userRoutes, context.system)
-
       val resumeRegistryActor =
         context.spawn(ResumeRegistry(), "ResumeRegistryActor")
       context.watch(resumeRegistryActor)

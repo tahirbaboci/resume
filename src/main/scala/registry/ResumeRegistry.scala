@@ -3,6 +3,8 @@ package registry
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
 
+import scala.collection.immutable
+
 case class Resume(id: Int,
                   name: String,
                   surname: String,
@@ -17,7 +19,7 @@ case class Resume(id: Int,
   require(name != null, "surname not filled")
 
 }
-case class Resumes(resumes: Seq[Resume])
+case class Resumes(resumes: immutable.Seq[Resume])
 case class Education(degree: String, university: String, date: String)
 case class Experience(company: String,
                       position: String,

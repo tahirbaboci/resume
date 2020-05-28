@@ -49,7 +49,7 @@ class ResumeRoutes(resumeRegistry: ActorRef[ResumeRegistry.Command])(
           }, post {
             entity(as[Resume]) { resume =>
               onSuccess(createResume(resume)) { performed =>
-                complete((StatusCodes.Created))
+                complete((StatusCodes.Created, performed.description))
               }
             }
           })
@@ -68,7 +68,7 @@ class ResumeRoutes(resumeRegistry: ActorRef[ResumeRegistry.Command])(
           }, delete {
             //#resumes-delete-logic
             onSuccess(deleteResume(id.toInt)) { performed =>
-              complete((StatusCodes.OK))
+              complete((StatusCodes.OK, performed.description))
             }
             //#resumes-delete-logic
           })
